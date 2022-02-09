@@ -1,4 +1,4 @@
-package ru.shanin.mycontact.presentation.main;
+package ru.shanin.mycontact.presentation.fragments.list_of_people;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.shanin.mycontact.R;
 
-public class PeopleViewHolder extends RecyclerView.ViewHolder {
+public class ViewHolder extends RecyclerView.ViewHolder {
     TextView tvFirstName;
     TextView tvSecondName;
     ImageView imPhoto;
 
-    public PeopleViewHolder(View itemView) {
+    public ViewHolder(View itemView) {
         super(itemView);
         tvFirstName = itemView.findViewById(R.id.tv_fname);
         tvSecondName = itemView.findViewById(R.id.tv_sname);

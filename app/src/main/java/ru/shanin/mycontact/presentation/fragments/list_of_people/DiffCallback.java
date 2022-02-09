@@ -1,11 +1,11 @@
-package ru.shanin.mycontact.presentation.main;
+package ru.shanin.mycontact.presentation.fragments.list_of_people;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
 import ru.shanin.mycontact.domain.entity.People;
 
-public class PeopleDiffCallback extends DiffUtil.ItemCallback<People> {
+public class DiffCallback extends DiffUtil.ItemCallback<People> {
 
     @Override
     public boolean areItemsTheSame(@NonNull People oldPeople, @NonNull People newPeople) {
@@ -14,7 +14,6 @@ public class PeopleDiffCallback extends DiffUtil.ItemCallback<People> {
 
     @Override
     public boolean areContentsTheSame(@NonNull People oldPeople, @NonNull People newPeople) {
-        //return oldPeople.equals(newPeople);
-        return false;
+        return oldPeople.equals(newPeople);
     }
 }
