@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyContact</string>
+    <string name="add_10">Add 10</string>
+    <string name="profile_photo"> profile_photo </string>
+    <string name="first_name_hint"> Input first name </string>
+    <string name="second_name_hint"> Input second name </string>
+</resources>
