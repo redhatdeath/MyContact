@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.shanin.mycontact.app.AppStart;
@@ -19,9 +20,9 @@ public class MainViewModel extends ViewModel {
     private final PeopleDeleteByIdUseCase delete = AppStart.peopleDeleteByIdUseCase;
     private final PeopleGetByAllUseCase getAll = AppStart.peopleGetByAll;
 
-    private MutableLiveData<List<People>> peopleList;
+    private MutableLiveData<ArrayList<People>> peopleList;
 
-    protected MutableLiveData<List<People>> getPeopleList() {
+    protected MutableLiveData<ArrayList<People>> getPeopleList() {
         peopleList = getAll.peopleGetByAll();
         return peopleList;
     }

@@ -2,7 +2,7 @@ package ru.shanin.mycontact.domain.usecases;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.domain.repository.PeopleDomainRepository;
@@ -15,7 +15,7 @@ public class PeopleGetByAllUseCase {
         this.repository = repository;
     }
 
-    public MutableLiveData<List<People>> peopleGetByAll() {
+    public MutableLiveData<ArrayList<People>> peopleGetByAll() {
         return repository.peopleGetAll();
     }
 }

@@ -2,7 +2,7 @@ package ru.shanin.mycontact.domain.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import ru.shanin.mycontact.domain.entity.People;
 
@@ -14,7 +14,7 @@ public interface PeopleDomainRepository {
 
     void peopleDeleteById(People people);
 
-    MutableLiveData<List<People>> peopleGetAll();
+    MutableLiveData<ArrayList<People>> peopleGetAll();
 
     People peopleGetById(int _id);
 

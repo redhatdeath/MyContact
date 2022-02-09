@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ru.shanin.mycontact.app.AppStart;
 import ru.shanin.mycontact.data.NewData;
@@ -14,8 +13,8 @@ import ru.shanin.mycontact.domain.repository.PeopleDomainRepository;
 
 public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
 
-    private final MutableLiveData<List<People>> dataLiveData;
-    private final List<People> data;
+    private final MutableLiveData<ArrayList<People>> dataLiveData;
+    private final ArrayList<People> data;
 
     {
         data = new ArrayList<>();
@@ -25,7 +24,7 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
     private static int autoIncrementId = 0;
 
     {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             peopleAddNew(
                     NewData.newPeople()
             );
@@ -33,7 +32,7 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
     }
 
     private void updateList() {
-        dataLiveData.postValue(data);
+        dataLiveData.postValue(new ArrayList<>(data));
         if (AppStart.isLog) {
             Log.w("PeopleArrayListRepositoryImpl", data.size() + "\n");
 
@@ -45,7 +44,7 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
         if (people.get_id() == People.UNDEFINED_ID)
             people.set_id(autoIncrementId++);
         data.add(people);
-        data.sort(People.bySFN);
+        data.sort(People.byFSN);
         updateList();
     }
 
@@ -63,7 +62,7 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
     }
 
     @Override
-    public MutableLiveData<List<People>> peopleGetAll() {
+    public MutableLiveData<ArrayList<People>> peopleGetAll() {
         return dataLiveData;
     }
 
