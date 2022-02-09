@@ -18,9 +18,9 @@ import ru.shanin.mycontact.domain.entity.People;
 
 public class PeopleArrayListAdapter
         extends ListAdapter<People, PeopleViewHolder>
-        implements ItemTouchHelperAdapter {
+{
 
-    public static final int MAX_POOL_SIZE = 15;
+    public static final int MAX_POOL_SIZE = 20;
     public static final int VIEW_TYPE_PEOPLE = 100;
     public static final int VIEW_TYPE_NULL = 300;
 
@@ -56,7 +56,7 @@ public class PeopleArrayListAdapter
     @Override
     public void onBindViewHolder(@NonNull PeopleViewHolder viewHolder, int position) {
         People people = getItem(position);
-        viewHolder.tvFirstName.setText(String.valueOf(people.get_id()));
+        viewHolder.tvFirstName.setText(String.valueOf(people.getPeopleInfo().getFirstName()));
         viewHolder.tvSecondName.setText(people.getPeopleInfo().getSecondName());
         String mDrawableName = people.getPeopleInfo().getPathToPhoto();
         //TODO  getResources() here
@@ -83,27 +83,6 @@ public class PeopleArrayListAdapter
             return VIEW_TYPE_PEOPLE;
         else return VIEW_TYPE_NULL;
     }
-
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(getCurrentList(), i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(getCurrentList(), i, i - 1);
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-        //getCurrentList().remove(position);
-        notifyItemRemoved(position);
-    }
-
 
     interface OnPeopleClickListener {
         void onPeopleClick(People people);

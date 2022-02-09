@@ -33,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         fab.setOnClickListener(v -> {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
                 viewModel.addNewPeople(NewData.newPeople());
         });
 
         viewModel.getPeopleList().observe(this, peoples -> {
-            Objects.requireNonNull(getSupportActionBar()).setTitle("length = " + peoples.size());
-            List<People> newList = peoples;
-            peopleListAdapter.submitList(newList);
+            //Objects.requireNonNull(getSupportActionBar()).setTitle("length = " + peoples.size());
+            //List<People> newList = peoples;
+            peopleListAdapter.submitList(peoples);
         });
 
         recyclerView.setAdapter(peopleListAdapter);
@@ -57,11 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(peopleListAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
     }
 
 

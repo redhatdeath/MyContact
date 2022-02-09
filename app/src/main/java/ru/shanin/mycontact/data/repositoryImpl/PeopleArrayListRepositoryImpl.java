@@ -35,7 +35,6 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
         dataLiveData.postValue(new ArrayList<>(data));
         if (AppStart.isLog) {
             Log.w("PeopleArrayListRepositoryImpl", data.size() + "\n");
-
         }
     }
 

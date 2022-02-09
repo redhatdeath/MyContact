@@ -14,7 +14,6 @@ public class PeopleDiffCallback extends DiffUtil.ItemCallback<People> {
 
     @Override
     public boolean areContentsTheSame(@NonNull People oldPeople, @NonNull People newPeople) {
-        //return oldPeople.equals(newPeople);
-        return false;
+        return oldPeople.equals(newPeople);
     }
 }
