@@ -35,7 +35,7 @@ public class Main extends AppCompatActivity {
     }
 
     private void startFragmentListOfPeople(Boolean isOnePane) {
-        Fragment fragment = ListOfPeople.newInstanceIsOnePaneMode(isOnePane);
+        Fragment fragment = ListOfPeople.newInstance(isOnePane);
         getSupportFragmentManager()
                 .popBackStack();
         getSupportFragmentManager()

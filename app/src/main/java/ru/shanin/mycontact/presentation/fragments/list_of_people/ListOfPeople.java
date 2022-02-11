@@ -21,15 +21,16 @@ import ru.shanin.mycontact.presentation.fragments.about_people.AboutPeople;
 public class ListOfPeople extends Fragment {
 
     private static final String ARGUMENT_IS_ONE_PANE_STATE = "is one pane";
-
-    private ListOfPeopleViewModel viewModel;
-    private FloatingActionButton fab;
-    private RecyclerView recyclerView;
-    private Adapter adapter;
     private Boolean isOnePane;
 
+    private ListOfPeopleViewModel viewModel;
 
-    public static ListOfPeople newInstanceIsOnePaneMode(Boolean isOnePane) {
+    private FloatingActionButton fab;
+    private RecyclerView recyclerView;
+
+    private Adapter adapter;
+
+    public static ListOfPeople newInstance(Boolean isOnePane) {
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_IS_ONE_PANE_STATE, isOnePane);
         ListOfPeople fragment = new ListOfPeople();
@@ -75,6 +76,18 @@ public class ListOfPeople extends Fragment {
         initView(view);
     }
 
+    private void initAdapter() {
+        adapter = new Adapter(new DiffCallback());
+        adapter.peopleClickListener = peopleId -> startAboutPeople(peopleId);
+    }
+
+    private void initViewModel() {
+        viewModel = new ViewModelProvider(this).get(ListOfPeopleViewModel.class);
+        viewModel.getPeopleList().observe(getViewLifecycleOwner(), peoples -> {
+            adapter.submitList(peoples);
+        });
+    }
+
     private void initView(View view) {
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
@@ -93,18 +106,6 @@ public class ListOfPeople extends Fragment {
                 Adapter.VIEW_TYPE_PEOPLE_AGE_4, Adapter.MAX_POOL_SIZE);
         recyclerView.getRecycledViewPool().setMaxRecycledViews(
                 Adapter.VIEW_TYPE_PEOPLE_AGE_DEFAULT, Adapter.MAX_POOL_SIZE);
-    }
-
-    private void initAdapter() {
-        adapter = new Adapter(new DiffCallback());
-        adapter.peopleClickListener = peopleId -> startAboutPeople(peopleId);
-    }
-
-    private void initViewModel() {
-        viewModel = new ViewModelProvider(this).get(ListOfPeopleViewModel.class);
-        viewModel.getPeopleList().observe(getViewLifecycleOwner(), peoples -> {
-            adapter.submitList(peoples);
-        });
     }
 
     private void startAboutPeople(int peopleId) {

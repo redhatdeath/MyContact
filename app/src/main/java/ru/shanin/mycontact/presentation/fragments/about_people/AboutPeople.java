@@ -18,6 +18,7 @@ import ru.shanin.mycontact.domain.entity.People;
 public class AboutPeople extends Fragment {
 
     private AboutPeopleViewModel viewModel;
+
     private static final String ARGUMENT_PEOPLE_ID = "people id";
     private int peopleId;
     private People people;

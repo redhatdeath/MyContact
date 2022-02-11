@@ -81,7 +81,7 @@ public class Adapter
         viewHolder.imPhoto.setImageResource(resID);
         viewHolder.itemView.setOnClickListener(
                 v -> {
-                    Toast.makeText(context, "people position = "+ position+"\npeople _id = "+ people.get_id(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "people position = " + position + "\npeople _id = " + people.get_id(), Toast.LENGTH_SHORT).show();
                     // TODO how it work now
                     peopleClickListener.onPeopleClick(position);
                     // TODO how it must be work
