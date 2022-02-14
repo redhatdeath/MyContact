@@ -3,9 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout-land/main.xml" value="0.264" />
         <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/activity_about.xml" value="0.3421985815602837" />
         <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/activity_about2.xml" value="0.3421985815602837" />
         <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/activity_main_rv.xml" value="0.2018743667679838" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/activity_people.xml" value="0.560515873015873" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/fragment_about_people.xml" value="0.536" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/fragment_list_of_contacts.xml" value="0.4516210739614995" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/fragment_list_of_contacts_1.xml" value="0.4516210739614995" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/fragment_list_of_people.xml" value="0.4" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/main.xml" value="0.264" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/people_age_1.xml" value="0.6625905797101449" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/people_age_2.xml" value="0.6625905797101449" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/people_age_3.xml" value="0.6625905797101449" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/people_age_4.xml" value="0.6625905797101449" />
+        <entry key="..\:/Work/AndroidStudioProjects/MyContact/app/src/main/res/layout/people_age_default.xml" value="0.6625905797101449" />
       </map>
     </option>
   </component>

@@ -1,5 +1,7 @@
 package ru.shanin.mycontact.domain.entity;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class PeopleInfo {
@@ -26,9 +28,10 @@ public class PeopleInfo {
         this.phone = phone;
         this.listOfKnowledge = listOfKnowledge;
         this.pathToPhoto = pathToPhoto;
-        this.age = (int) (Math.random() * 30 + 18);
+        this.age = (int) (Math.random() * 61 + 5);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return firstName + " " + secondName;

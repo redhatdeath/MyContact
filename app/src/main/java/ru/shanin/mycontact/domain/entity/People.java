@@ -1,5 +1,6 @@
 package ru.shanin.mycontact.domain.entity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Comparator;
@@ -44,6 +45,7 @@ public class People {
         this._id = UNDEFINED_ID;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return peopleInfo.toString();

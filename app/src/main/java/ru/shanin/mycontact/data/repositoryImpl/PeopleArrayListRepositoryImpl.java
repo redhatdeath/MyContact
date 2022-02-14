@@ -67,6 +67,7 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
 
     @Override
     public People peopleGetById(int _id) {
+        // TODO find by position in arraylist. not by id. need change
         People people = data.get(_id);
         if (people != null)
             return people;
