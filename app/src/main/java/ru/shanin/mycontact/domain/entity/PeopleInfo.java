@@ -31,6 +31,24 @@ public class PeopleInfo {
         this.age = (int) (Math.random() * 61 + 5);
     }
 
+    public PeopleInfo(
+            String firstName,
+            String secondName,
+            int age,
+            String email,
+            String phone,
+            ArrayList<String> listOfKnowledge,
+            String pathToPhoto
+    ) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.age = age;
+        this.email = email;
+        this.phone = phone;
+        this.listOfKnowledge = listOfKnowledge;
+        this.pathToPhoto = pathToPhoto;
+    }
+
     @NonNull
     @Override
     public String toString() {

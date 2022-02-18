@@ -1,4 +1,4 @@
-package ru.shanin.mycontact.data;
+package ru.shanin.mycontact.data.generate;
 
 import android.content.Context;
 

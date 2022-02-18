@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ru.shanin.mycontact.R;
-import ru.shanin.mycontact.data.NewData;
+import ru.shanin.mycontact.data.generate.NewData;
 import ru.shanin.mycontact.presentation.fragments.about_people.AboutPeople;
 
 public class ListOfPeople extends Fragment {
@@ -78,7 +78,7 @@ public class ListOfPeople extends Fragment {
 
     private void initAdapter() {
         adapter = new Adapter(new DiffCallback());
-        adapter.peopleClickListener = peopleId -> startAboutPeople(peopleId);
+        adapter.peopleClickListener = this::startAboutPeople;
     }
 
     private void initViewModel() {

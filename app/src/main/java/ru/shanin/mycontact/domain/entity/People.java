@@ -45,6 +45,11 @@ public class People {
         this._id = UNDEFINED_ID;
     }
 
+    public People(int _id, PeopleInfo peopleInfo) {
+        this.peopleInfo = peopleInfo;
+        this._id = _id;
+    }
+
     @NonNull
     @Override
     public String toString() {

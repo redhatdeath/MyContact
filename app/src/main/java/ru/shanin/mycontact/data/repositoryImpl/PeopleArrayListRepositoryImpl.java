@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 
 import ru.shanin.mycontact.app.AppStart;
-import ru.shanin.mycontact.data.NewData;
+import ru.shanin.mycontact.data.generate.NewData;
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.domain.repository.PeopleDomainRepository;
 
