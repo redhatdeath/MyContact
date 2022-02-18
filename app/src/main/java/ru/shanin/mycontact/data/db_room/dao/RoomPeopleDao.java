@@ -1,6 +1,5 @@
 package ru.shanin.mycontact.data.db_room.dao;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -8,7 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import ru.shanin.mycontact.data.db_room.entity.RoomPeople;
 
@@ -23,9 +22,11 @@ public interface RoomPeopleDao {
     @Delete
     void roomPeopleDeleteById(RoomPeople roomPeople);
 
-    @Query("SELECT * FROM Peoples")
-    ArrayList<RoomPeople> roomPeopleGetAll();
+    @Query("SELECT * FROM Peoples ORDER BY First_name,Second_name ASC")
+    List<RoomPeople> roomPeopleGetAll();
 
-    @Query("SELECT * FROM Peoples WHERE People_id = :_id")
-    RoomPeople roomPeopleGetById(int _id);
+    @Query("SELECT * FROM Peoples WHERE People_id = :id")
+    RoomPeople roomPeopleGetById(int id);
+
+
 }
