@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 
 import ru.shanin.mycontact.app.AppStart;
-import ru.shanin.mycontact.data.generate.NewData;
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.domain.repository.PeopleDomainRepository;
 
@@ -22,14 +21,6 @@ public class PeopleArrayListRepositoryImpl implements PeopleDomainRepository {
     }
 
     private static int autoIncrementId = 0;
-
-    {
-        for (int i = 0; i < 5; i++) {
-            peopleAddNew(
-                    NewData.newPeople()
-            );
-        }
-    }
 
     private void updateList() {
         dataLiveData.postValue(new ArrayList<>(data));
