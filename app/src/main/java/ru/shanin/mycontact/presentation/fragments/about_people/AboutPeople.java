@@ -1,6 +1,7 @@
 package ru.shanin.mycontact.presentation.fragments.about_people;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,24 +13,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.gson.Gson;
+
 import ru.shanin.mycontact.R;
+import ru.shanin.mycontact.app.AppStart;
 import ru.shanin.mycontact.domain.entity.People;
 
 public class AboutPeople extends Fragment {
 
     private AboutPeopleViewModel viewModel;
 
-    private static final String ARGUMENT_PEOPLE_ID = "people id";
-    private int peopleId;
+    private static final String ARGUMENT_PEOPLE = "people Gson";
     private People people;
 
     private int[] color = {0xAA55FF00, 0xAA550033, 0xAA550077, 0xAA5500AA, 0xAA5500FF};
 
     public static AboutPeople newInstance(
-            int peopleId
+            String peopleGson
     ) {
         Bundle args = new Bundle();
-        args.putInt(ARGUMENT_PEOPLE_ID, peopleId);
+        args.putString(ARGUMENT_PEOPLE, peopleGson);
         AboutPeople fragment = new AboutPeople();
         fragment.setArguments(args);
         return fragment;
@@ -37,9 +40,13 @@ public class AboutPeople extends Fragment {
 
     private void parseParams() {
         Bundle args = requireArguments();
-        if (!args.containsKey(ARGUMENT_PEOPLE_ID))
+        if (!args.containsKey(ARGUMENT_PEOPLE))
             throw new RuntimeException("Argument '\''People Id'\'' is absent");
-        peopleId = args.getInt(ARGUMENT_PEOPLE_ID);
+        String peopleGson = args.getString(ARGUMENT_PEOPLE);
+        people = (new Gson()).fromJson(peopleGson, People.class);
+        if (AppStart.isLog) {
+            Log.w("AboutPeople", "incoming parseParams:   " + peopleGson + "\n");
+        }
     }
 
     @Override
@@ -75,7 +82,7 @@ public class AboutPeople extends Fragment {
 
     private void initViewModel() {
         viewModel = new ViewModelProvider(this).get(AboutPeopleViewModel.class);
-        people = viewModel.getPeople(peopleId);
+        //people = viewModel.getPeople(people.get_id());
     }
 
     private void initView(View view) {

@@ -41,7 +41,8 @@ public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
     private void update() {
         synchronized (roomPeopleDao) {
             List<RoomPeople> roomPeopleData = roomPeopleDao.roomPeopleGetAll();
-            autoIncrementId = roomPeopleData.size();
+            if (autoIncrementId == 0)
+                autoIncrementId = roomPeopleData.size();
             if (AppStart.isLog) {
                 Log.w("update", "autoIncrementId = " + autoIncrementId + "\n");
             }
@@ -56,11 +57,14 @@ public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
     public void peopleAddNew(People people) {
         if (people.get_id() == People.UNDEFINED_ID)
             people.set_id(++autoIncrementId);
-        synchronized (roomPeopleDao) {
-            RoomPeople rp = EntityMapper.toRoomPeople(people);
-            Log.w("PeopleRoomRepositoryImpl", (new Gson()).toJson(rp));
-            roomPeopleDao.roomPeopleAddNew(rp);
-        }
+        AsyncTask.execute(
+                () -> {
+                    synchronized (roomPeopleDao) {
+                        RoomPeople rp = EntityMapper.toRoomPeople(people);
+                        Log.w("PeopleRoomRepositoryImpl", (new Gson()).toJson(rp));
+                        roomPeopleDao.roomPeopleAddNew(rp);
+                    }
+                });
         updateAsyncTask();
     }
 
@@ -76,11 +80,15 @@ public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
 
     @Override
     public void peopleDeleteById(People people) {
-        synchronized (roomPeopleDao) {
-            roomPeopleDao.roomPeopleDeleteById(
-                    EntityMapper.toRoomPeople(people)
-            );
-        }
+        AsyncTask.execute(
+                () -> {
+                    synchronized (roomPeopleDao) {
+                        roomPeopleDao.roomPeopleDeleteById(
+                                EntityMapper.toRoomPeople(people)
+                        );
+                    }
+                }
+        );
         updateAsyncTask();
     }
 
@@ -92,12 +100,15 @@ public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
 
     @Override
     public People peopleGetById(int _id) {
-        People people;
-        synchronized (roomPeopleDao) {
-            people = EntityMapper.toPeople(
-                    roomPeopleDao.roomPeopleGetById(_id)
-            );
-        }
-        return people;
+        final People[] people = new People[1];
+        AsyncTask.execute(
+                () -> {
+                    synchronized (roomPeopleDao) {
+                        people[0] = EntityMapper.toPeople(
+                                roomPeopleDao.roomPeopleGetById(_id)
+                        );
+                    }
+                });
+        return people[0];
     }
 }

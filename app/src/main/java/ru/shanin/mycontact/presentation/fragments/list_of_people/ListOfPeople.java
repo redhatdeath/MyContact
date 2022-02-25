@@ -10,12 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import ru.shanin.mycontact.R;
 import ru.shanin.mycontact.data.generate.NewData;
+import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.presentation.fragments.about_people.AboutPeople;
 
 public class ListOfPeople extends Fragment {
@@ -27,6 +30,8 @@ public class ListOfPeople extends Fragment {
 
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
+
+    private ItemTouchHelper peopleTouchHelper;
 
     private Adapter adapter;
 
@@ -79,6 +84,7 @@ public class ListOfPeople extends Fragment {
     private void initAdapter() {
         adapter = new Adapter(new DiffCallback());
         adapter.peopleClickListener = this::startAboutPeople;
+        initSwipe();
     }
 
     private void initViewModel() {
@@ -88,14 +94,35 @@ public class ListOfPeople extends Fragment {
         });
     }
 
-    private void initView(View view) {
-        fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            //TODO Make method to action on click on fab
-            viewModel.addNewPeople(NewData.newPeople());
-        });
-        recyclerView = view.findViewById(R.id.rv_people_list);
-        recyclerView.setAdapter(adapter);
+    private void initSwipe() {
+        peopleTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(
+                        0,
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
+                ) {
+                    @Override
+                    public boolean onMove(
+                            @NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder,
+                            @NonNull RecyclerView.ViewHolder target
+                    ) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(
+                            @NonNull RecyclerView.ViewHolder viewHolder,
+                            int direction
+                    ) {
+                        People people = adapter.getCurrentList().get(viewHolder.getAdapterPosition());
+                        viewModel.deletePeople(people);
+                    }
+
+                }
+        );
+    }
+
+    private void setupRecyclerView() {
         recyclerView.getRecycledViewPool().setMaxRecycledViews(
                 Adapter.VIEW_TYPE_PEOPLE_AGE_1, Adapter.MAX_POOL_SIZE);
         recyclerView.getRecycledViewPool().setMaxRecycledViews(
@@ -108,8 +135,22 @@ public class ListOfPeople extends Fragment {
                 Adapter.VIEW_TYPE_PEOPLE_AGE_DEFAULT, Adapter.MAX_POOL_SIZE);
     }
 
-    private void startAboutPeople(int peopleId) {
-        Fragment fragment = AboutPeople.newInstance(peopleId);
+    private void initView(View view) {
+        fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            //TODO Make method to action on click on fab
+            viewModel.addNewPeople(NewData.newPeople());
+        });
+
+        recyclerView = view.findViewById(R.id.rv_people_list);
+        recyclerView.setAdapter(adapter);
+        setupRecyclerView();
+        peopleTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void startAboutPeople(People people) {
+        Fragment fragment = AboutPeople.newInstance(
+                (new Gson()).toJson(people));
         FragmentManager fragmentManager = getParentFragmentManager();
         fragmentManager.popBackStack();
         if (isOnePane)

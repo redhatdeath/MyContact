@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ListAdapter;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import ru.shanin.mycontact.R;
 import ru.shanin.mycontact.app.AppStart;
 import ru.shanin.mycontact.domain.entity.People;
@@ -71,7 +73,6 @@ public class Adapter
         viewHolder.tvFirstName.setText(String.valueOf(people.getPeopleInfo().getFirstName()));
         viewHolder.tvSecondName.setText(people.getPeopleInfo().getSecondName());
         String mDrawableName = people.getPeopleInfo().getPathToPhoto();
-        //TODO  getResources() here
         Context context = viewHolder.itemView.getContext();
         int resID = context.getResources().getIdentifier(
                 mDrawableName,
@@ -81,11 +82,16 @@ public class Adapter
         viewHolder.imPhoto.setImageResource(resID);
         viewHolder.itemView.setOnClickListener(
                 v -> {
-                    Toast.makeText(context, "people position = " + position + "\npeople _id = " + people.get_id(), Toast.LENGTH_SHORT).show();
-                    // TODO how it work now
-                    peopleClickListener.onPeopleClick(position);
-                    // TODO how it must be work
-                    //peopleClickListener.onPeopleClick(people.get_id());
+                    Snackbar
+                            .make
+                                    (
+                                            viewHolder.itemView,
+                                            "people position = " + position + "\n" +
+                                                    "people _id = " + people.get_id(),
+                                            Snackbar.LENGTH_LONG
+                                    )
+                            .show();
+                    peopleClickListener.onPeopleClick(getCurrentList().get(position));
                 }
         );
     }
@@ -105,6 +111,6 @@ public class Adapter
     }
 
     interface OnPeopleClickListener {
-        void onPeopleClick(int peopleId);
+        void onPeopleClick(People people);
     }
 }
