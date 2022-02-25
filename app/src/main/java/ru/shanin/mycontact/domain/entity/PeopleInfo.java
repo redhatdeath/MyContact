@@ -1,5 +1,8 @@
 package ru.shanin.mycontact.domain.entity;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -65,6 +68,30 @@ public class PeopleInfo {
                 ", pathToPhoto='" + pathToPhoto + '\'' +
                 ", listOfKnowledge=" + listOfKnowledge +
                 " ";
+    }
+
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null || object.getClass() != getClass())
+            return false;
+        PeopleInfo peopleInfo = (PeopleInfo) object;
+        return
+                this.firstName.equals(peopleInfo.getFirstName()) &&
+                        this.secondName.equals(peopleInfo.getSecondName()) &&
+                        this.email.equals(peopleInfo.getEmail()) &&
+                        this.phone.equals(peopleInfo.getPhone()) &&
+                        this.pathToPhoto.equals(peopleInfo.getPathToPhoto()) &&
+                        this.age == peopleInfo.getAge() && (
+                        this.listOfKnowledge == peopleInfo.getListOfKnowledge() ||
+                                this.listOfKnowledge.stream()
+                                        .collect(groupingBy(k -> k, counting()))
+                                        .equals(
+                                                peopleInfo.getListOfKnowledge().stream()
+                                                        .collect(groupingBy(k -> k, counting())))
+                );
     }
 
     public String getFirstName() {

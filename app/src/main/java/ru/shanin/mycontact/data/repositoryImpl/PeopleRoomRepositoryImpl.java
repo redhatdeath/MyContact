@@ -19,7 +19,8 @@ import ru.shanin.mycontact.domain.repository.PeopleDomainRepository;
 
 public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
     private final RoomPeopleDao roomPeopleDao;
-    private final MutableLiveData<ArrayList<People>> dataLiveData;
+    private final MutableLiveData<ArrayList<People>> peoplesListLiveData;
+    private final MutableLiveData<People> peopleLiveData;
 
     private static int autoIncrementId = 0;
 
@@ -27,88 +28,95 @@ public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
             RoomPeopleDao roomPeopleDao
     ) {
         this.roomPeopleDao = roomPeopleDao;
-        updateAsyncTask();
-        dataLiveData = new MutableLiveData<>();
-    }
-
-    private void updateAsyncTask() {
-        AsyncTask.execute(
-                this::update
-        );
+        initAutoIncrementId();
+        peoplesListLiveData = new MutableLiveData<>();
+        peopleLiveData = new MutableLiveData<>();
     }
 
 
-    private void update() {
-        synchronized (roomPeopleDao) {
-            List<RoomPeople> roomPeopleData = roomPeopleDao.roomPeopleGetAll();
-            if (autoIncrementId == 0)
-                autoIncrementId = roomPeopleData.size();
-            if (AppStart.isLog) {
-                Log.w("update", "autoIncrementId = " + autoIncrementId + "\n");
+    private void initAutoIncrementId() {
+        AsyncTask.execute(() -> {
+            synchronized (roomPeopleDao) {
+                autoIncrementId = roomPeopleDao.roomPeopleGetMaxId();
+                if (AppStart.isLog) {
+                    Log.w("update", "autoIncrementId = " + autoIncrementId);
+                }
             }
-            ArrayList<People> data = new ArrayList<>();
-            for (RoomPeople roomPeople : roomPeopleData)
-                data.add(EntityMapper.toPeople(roomPeople));
-            dataLiveData.postValue(new ArrayList<>(data));
-        }
+        });
+        updatePeopleListAsyncTask();
     }
 
     @Override
     public void peopleAddNew(People people) {
         if (people.get_id() == People.UNDEFINED_ID)
             people.set_id(++autoIncrementId);
-        AsyncTask.execute(
-                () -> {
-                    synchronized (roomPeopleDao) {
-                        RoomPeople rp = EntityMapper.toRoomPeople(people);
-                        Log.w("PeopleRoomRepositoryImpl", (new Gson()).toJson(rp));
-                        roomPeopleDao.roomPeopleAddNew(rp);
-                    }
-                });
-        updateAsyncTask();
+        AsyncTask.execute(() -> {
+            synchronized (roomPeopleDao) {
+                RoomPeople rp = EntityMapper.toRoomPeople(people);
+                Log.w("PeopleRoomRepositoryImpl", (new Gson()).toJson(rp));
+                roomPeopleDao.roomPeopleAddNew(rp);
+            }
+        });
+        updatePeopleListAsyncTask();
     }
 
     @Override
     public void peopleEditById(People people) {
-        synchronized (roomPeopleDao) {
-            roomPeopleDao.roomPeopleEditById(
-                    EntityMapper.toRoomPeople(people)
-            );
-        }
-        updateAsyncTask();
+        AsyncTask.execute(() -> {
+            synchronized (roomPeopleDao) {
+                roomPeopleDao.roomPeopleEditById(
+                        EntityMapper.toRoomPeople(people)
+                );
+            }
+        });
+        updatePeopleListAsyncTask();
     }
 
     @Override
     public void peopleDeleteById(People people) {
-        AsyncTask.execute(
-                () -> {
-                    synchronized (roomPeopleDao) {
-                        roomPeopleDao.roomPeopleDeleteById(
-                                EntityMapper.toRoomPeople(people)
-                        );
-                    }
-                }
-        );
-        updateAsyncTask();
+        AsyncTask.execute(() -> {
+            synchronized (roomPeopleDao) {
+                roomPeopleDao.roomPeopleDeleteById(
+                        EntityMapper.toRoomPeople(people)
+                );
+            }
+        });
+        updatePeopleListAsyncTask();
     }
 
+    private void updatePeopleListAsyncTask() {
+        AsyncTask.execute(() -> {
+            synchronized (roomPeopleDao) {
+                List<RoomPeople> roomPeopleData = roomPeopleDao.roomPeopleGetAll();
+                ArrayList<People> data = new ArrayList<>();
+                for (RoomPeople roomPeople : roomPeopleData)
+                    data.add(EntityMapper.toPeople(roomPeople));
+                peoplesListLiveData.postValue(new ArrayList<>(data));
+            }
+        });
+    }
+
+
+    private void findPeopleById(int _id) {
+        AsyncTask.execute(() -> {
+            synchronized (roomPeopleDao) {
+                People people = EntityMapper.toPeople(
+                        roomPeopleDao.roomPeopleGetById(_id)
+                );
+                peopleLiveData.postValue(people);
+            }
+        });
+
+    }
 
     @Override
     public MutableLiveData<ArrayList<People>> peopleGetAll() {
-        return dataLiveData;
+        return peoplesListLiveData;
     }
 
     @Override
-    public People peopleGetById(int _id) {
-        final People[] people = new People[1];
-        AsyncTask.execute(
-                () -> {
-                    synchronized (roomPeopleDao) {
-                        people[0] = EntityMapper.toPeople(
-                                roomPeopleDao.roomPeopleGetById(_id)
-                        );
-                    }
-                });
-        return people[0];
+    public MutableLiveData<People> peopleGetById(int _id) {
+        findPeopleById(_id);
+        return peopleLiveData;
     }
 }

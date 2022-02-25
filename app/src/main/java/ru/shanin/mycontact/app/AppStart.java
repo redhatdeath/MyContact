@@ -6,11 +6,9 @@ import android.content.Context;
 import androidx.room.Room;
 
 import ru.shanin.mycontact.data.db_room.database.AppDatabase;
-import ru.shanin.mycontact.data.repositoryImpl.PeopleArrayListRepositoryImpl;
 import ru.shanin.mycontact.data.repositoryImpl.PeopleRoomRepositoryImpl;
 import ru.shanin.mycontact.domain.usecases.PeopleAddNewUseCases;
 import ru.shanin.mycontact.domain.usecases.PeopleDeleteByIdUseCase;
-import ru.shanin.mycontact.domain.usecases.PeopleEditByIdUseCase;
 import ru.shanin.mycontact.domain.usecases.PeopleGetByAllUseCase;
 import ru.shanin.mycontact.domain.usecases.PeopleGetByIdUseCase;
 
@@ -18,15 +16,32 @@ import ru.shanin.mycontact.domain.usecases.PeopleGetByIdUseCase;
 public class AppStart extends Application {
     public static final Boolean isLog = !false;
 
-    public static PeopleRoomRepositoryImpl peopleRoomRepositoryImpl;
-    public static PeopleArrayListRepositoryImpl peopleArrayListRepositoryImpl;
+    private static PeopleRoomRepositoryImpl peopleRoomRepositoryImpl;
 
-    public static AppStart INSTANCE;
+    private PeopleGetByIdUseCase getById;
+    private PeopleAddNewUseCases addNew;
+    private PeopleDeleteByIdUseCase delete;
+    private PeopleGetByAllUseCase getAll;
+
+    public PeopleGetByIdUseCase getGetById() {
+        return getById;
+    }
+
+    public PeopleAddNewUseCases getAddNew() {
+        return addNew;
+    }
+
+    public PeopleDeleteByIdUseCase getDelete() {
+        return delete;
+    }
+
+    public PeopleGetByAllUseCase getGetAll() {
+        return getAll;
+    }
+
+    private static AppStart INSTANCE;
     private AppDatabase database;
 
-    static {
-
-    }
 
     @Override
     public void onCreate() {
@@ -34,7 +49,10 @@ public class AppStart extends Application {
         INSTANCE = this;
         database = createDataBase(this);
         peopleRoomRepositoryImpl = new PeopleRoomRepositoryImpl(database.roomPeopleDao());
-        peopleArrayListRepositoryImpl = new PeopleArrayListRepositoryImpl();
+        getById = new PeopleGetByIdUseCase(peopleRoomRepositoryImpl);
+        addNew = new PeopleAddNewUseCases(peopleRoomRepositoryImpl);
+        delete = new PeopleDeleteByIdUseCase(peopleRoomRepositoryImpl);
+        getAll = new PeopleGetByAllUseCase(peopleRoomRepositoryImpl);
     }
 
     public static AppStart getINSTANCE() {

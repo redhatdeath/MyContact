@@ -1,17 +1,27 @@
 package ru.shanin.mycontact.presentation.fragments.about_people;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
-import ru.shanin.mycontact.app.AppStart;
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.domain.usecases.PeopleGetByIdUseCase;
 
 public class AboutPeopleViewModel extends ViewModel {
 
-    private final PeopleGetByIdUseCase getById =
-            new PeopleGetByIdUseCase(AppStart.peopleRoomRepositoryImpl);
+    private MutableLiveData<People> peopleLiveData;
 
-    protected People getPeople(int peopleId) {
-        return getById.peopleGetById(peopleId);
+    private PeopleGetByIdUseCase getById;
+
+    public AboutPeopleViewModel(PeopleGetByIdUseCase getById) {
+        this.getById = getById;
     }
+
+    protected MutableLiveData<People> getPeople(int peopleId) {
+        peopleLiveData = getById.peopleGetById(peopleId);
+        return peopleLiveData;
+    }
+
+
 }
+

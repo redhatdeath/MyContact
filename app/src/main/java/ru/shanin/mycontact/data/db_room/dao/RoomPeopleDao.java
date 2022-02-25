@@ -28,4 +28,7 @@ public interface RoomPeopleDao {
     @Query("SELECT * FROM Peoples WHERE People_id = :id")
     RoomPeople roomPeopleGetById(int id);
 
+    @Query("SELECT MAX(People_id) FROM Peoples")
+    int roomPeopleGetMaxId();
+
 }

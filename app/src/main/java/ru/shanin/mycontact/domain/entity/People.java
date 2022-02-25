@@ -28,7 +28,6 @@ public class People {
     }
 
     private final PeopleInfo peopleInfo;
-    // private ArrayList<String> listOfWork;
     private int _id;
 
     public int get_id() {
@@ -56,12 +55,6 @@ public class People {
         return peopleInfo.toString();
     }
 
-    public String toMyString() {
-        return "People { " +
-                " _id=" + _id +
-                ", peopleInfo=" + peopleInfo.toMyString() +
-                " }";
-    }
 
     public PeopleInfo getPeopleInfo() {
         return peopleInfo;

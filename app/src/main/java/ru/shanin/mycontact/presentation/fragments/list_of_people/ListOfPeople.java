@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import ru.shanin.mycontact.R;
+import ru.shanin.mycontact.app.AppStart;
 import ru.shanin.mycontact.data.generate.NewData;
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.presentation.fragments.about_people.AboutPeople;
@@ -88,7 +89,14 @@ public class ListOfPeople extends Fragment {
     }
 
     private void initViewModel() {
-        viewModel = new ViewModelProvider(this).get(ListOfPeopleViewModel.class);
+        viewModel = new ViewModelProvider(
+                this,
+                new ListOfPeopleViewModelFactory(
+                        AppStart.getINSTANCE().getDelete(),
+                        AppStart.getINSTANCE().getAddNew(),
+                        AppStart.getINSTANCE().getGetAll()
+                ))
+                .get(ListOfPeopleViewModel.class);
         viewModel.getPeopleList().observe(getViewLifecycleOwner(), peoples -> {
             adapter.submitList(peoples);
         });
@@ -150,7 +158,8 @@ public class ListOfPeople extends Fragment {
 
     private void startAboutPeople(People people) {
         Fragment fragment = AboutPeople.newInstance(
-                (new Gson()).toJson(people));
+                (new Gson()).toJson(people),
+                people.get_id());
         FragmentManager fragmentManager = getParentFragmentManager();
         fragmentManager.popBackStack();
         if (isOnePane)

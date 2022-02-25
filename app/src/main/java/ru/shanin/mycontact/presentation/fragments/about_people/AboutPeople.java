@@ -23,16 +23,20 @@ public class AboutPeople extends Fragment {
 
     private AboutPeopleViewModel viewModel;
 
-    private static final String ARGUMENT_PEOPLE = "people Gson";
+    private static final String ARGUMENT_PEOPLE_GSON = "people Gson";
+    private static final String ARGUMENT_PEOPLE_ID = "people id";
     private People people;
+    private int peopleId;
 
     private int[] color = {0xAA55FF00, 0xAA550033, 0xAA550077, 0xAA5500AA, 0xAA5500FF};
 
     public static AboutPeople newInstance(
-            String peopleGson
+            String peopleGson,
+            int peopleId
     ) {
         Bundle args = new Bundle();
-        args.putString(ARGUMENT_PEOPLE, peopleGson);
+        args.putString(ARGUMENT_PEOPLE_GSON, peopleGson);
+        args.putInt(ARGUMENT_PEOPLE_ID, peopleId);
         AboutPeople fragment = new AboutPeople();
         fragment.setArguments(args);
         return fragment;
@@ -40,12 +44,16 @@ public class AboutPeople extends Fragment {
 
     private void parseParams() {
         Bundle args = requireArguments();
-        if (!args.containsKey(ARGUMENT_PEOPLE))
+        if (!args.containsKey(ARGUMENT_PEOPLE_ID))
             throw new RuntimeException("Argument '\''People Id'\'' is absent");
-        String peopleGson = args.getString(ARGUMENT_PEOPLE);
+        if (!args.containsKey(ARGUMENT_PEOPLE_GSON))
+            throw new RuntimeException("Argument '\''People Gson'\'' is absent");
+        String peopleGson = args.getString(ARGUMENT_PEOPLE_GSON);
         people = (new Gson()).fromJson(peopleGson, People.class);
+        peopleId = args.getInt(ARGUMENT_PEOPLE_ID);
         if (AppStart.isLog) {
-            Log.w("AboutPeople", "incoming parseParams:   " + peopleGson + "\n");
+            Log.w("AboutPeople", "Incoming parseParams:   " + peopleGson + "\n");
+            Log.w("AboutPeople", "Confirm ID:   " + (people.get_id() == peopleId) + "\n");
         }
     }
 
@@ -55,7 +63,6 @@ public class AboutPeople extends Fragment {
     ) {
         super.onCreate(savedInstanceState);
         parseParams();
-        initViewModel();
     }
 
     @Override
@@ -78,11 +85,20 @@ public class AboutPeople extends Fragment {
     ) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
+        initViewModel();
     }
 
     private void initViewModel() {
-        viewModel = new ViewModelProvider(this).get(AboutPeopleViewModel.class);
-        //people = viewModel.getPeople(people.get_id());
+        viewModel = new ViewModelProvider(
+                this,
+                new AboutPeopleViewModelFactory(
+                        AppStart.getINSTANCE().getGetById()
+                ))
+                .get(AboutPeopleViewModel.class);
+        viewModel.getPeople(peopleId).observe(
+                getViewLifecycleOwner(),
+                _people -> people = _people
+        );
     }
 
     private void initView(View view) {

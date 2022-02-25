@@ -1,5 +1,7 @@
 package ru.shanin.mycontact.domain.usecases;
 
+import androidx.lifecycle.MutableLiveData;
+
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.domain.repository.PeopleDomainRepository;
 
@@ -11,7 +13,7 @@ public class PeopleGetByIdUseCase {
         this.repository = repository;
     }
 
-    public People peopleGetById(int _id) {
+    public MutableLiveData<People> peopleGetById(int _id) {
         return repository.peopleGetById(_id);
     }
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-import ru.shanin.mycontact.app.AppStart;
 import ru.shanin.mycontact.domain.entity.People;
 import ru.shanin.mycontact.domain.usecases.PeopleAddNewUseCases;
 import ru.shanin.mycontact.domain.usecases.PeopleDeleteByIdUseCase;
@@ -13,27 +12,32 @@ import ru.shanin.mycontact.domain.usecases.PeopleGetByAllUseCase;
 
 public class ListOfPeopleViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<People>> peoplesLiveData;
-    private ArrayList<People> data;
+    private MutableLiveData<ArrayList<People>> peoplesListLiveData;
 
-    private final PeopleGetByAllUseCase getAll =
-            new PeopleGetByAllUseCase(AppStart.peopleRoomRepositoryImpl);
+    private PeopleDeleteByIdUseCase delete;
+    private PeopleAddNewUseCases addNew;
+    private PeopleGetByAllUseCase getAll;
 
-    protected MutableLiveData<ArrayList<People>> getPeopleList() {
-        peoplesLiveData = getAll.peopleGetByAll();
-        data = peoplesLiveData.getValue();
-        return peoplesLiveData;
+
+    public ListOfPeopleViewModel(
+            PeopleDeleteByIdUseCase delete,
+            PeopleAddNewUseCases addNew,
+            PeopleGetByAllUseCase getAll
+    ) {
+        this.delete = delete;
+        this.addNew = addNew;
+        this.getAll = getAll;
     }
 
-    private final PeopleAddNewUseCases addNew =
-            new PeopleAddNewUseCases(AppStart.peopleRoomRepositoryImpl);
+    protected MutableLiveData<ArrayList<People>> getPeopleList() {
+        peoplesListLiveData = getAll.peopleGetByAll();
+        return peoplesListLiveData;
+    }
+
 
     protected void addNewPeople(People people) {
         addNew.peopleAddNew(people);
     }
-
-    private final PeopleDeleteByIdUseCase delete =
-            new PeopleDeleteByIdUseCase(AppStart.peopleRoomRepositoryImpl);
 
     protected void deletePeople(People people) {
         delete.peopleDeleteById(people);
