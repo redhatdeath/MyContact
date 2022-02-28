@@ -92,14 +92,17 @@ public class ListOfPeople extends Fragment {
         viewModel = new ViewModelProvider(
                 this,
                 new ListOfPeopleViewModelFactory(
-                        AppStart.getINSTANCE().getDelete(),
-                        AppStart.getINSTANCE().getAddNew(),
-                        AppStart.getINSTANCE().getGetAll()
+                        AppStart.getInstance().getDelete(),
+                        AppStart.getInstance().getAddNew(),
+                        AppStart.getInstance().getGetAll()
                 ))
                 .get(ListOfPeopleViewModel.class);
-        viewModel.getPeopleList().observe(getViewLifecycleOwner(), peoples -> {
-            adapter.submitList(peoples);
-        });
+        viewModel
+                .getPeopleList()
+                .observe(
+                        getViewLifecycleOwner(),
+                        peoples -> adapter.submitList(peoples)
+                );
     }
 
     private void initSwipe() {

@@ -45,9 +45,9 @@ public class AboutPeople extends Fragment {
     private void parseParams() {
         Bundle args = requireArguments();
         if (!args.containsKey(ARGUMENT_PEOPLE_ID))
-            throw new RuntimeException("Argument '\''People Id'\'' is absent");
+            throw new RuntimeException("Argument '''People Id''' is absent");
         if (!args.containsKey(ARGUMENT_PEOPLE_GSON))
-            throw new RuntimeException("Argument '\''People Gson'\'' is absent");
+            throw new RuntimeException("Argument '''People Gson''' is absent");
         String peopleGson = args.getString(ARGUMENT_PEOPLE_GSON);
         people = (new Gson()).fromJson(peopleGson, People.class);
         peopleId = args.getInt(ARGUMENT_PEOPLE_ID);
@@ -92,7 +92,7 @@ public class AboutPeople extends Fragment {
         viewModel = new ViewModelProvider(
                 this,
                 new AboutPeopleViewModelFactory(
-                        AppStart.getINSTANCE().getGetById()
+                        AppStart.getInstance().getGetById()
                 ))
                 .get(AboutPeopleViewModel.class);
         viewModel.getPeople(peopleId).observe(

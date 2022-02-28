@@ -39,7 +39,7 @@ public class PeopleRoomRepositoryImpl implements PeopleDomainRepository {
             synchronized (roomPeopleDao) {
                 autoIncrementId = roomPeopleDao.roomPeopleGetMaxId();
                 if (AppStart.isLog) {
-                    Log.w("update", "autoIncrementId = " + autoIncrementId);
+                    Log.w("update", "in AsyncTask: autoIncrementId = " + autoIncrementId);
                 }
             }
         });

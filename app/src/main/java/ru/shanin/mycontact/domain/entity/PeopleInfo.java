@@ -58,19 +58,6 @@ public class PeopleInfo {
         return firstName + " " + secondName;
     }
 
-    public String toMyString() {
-        return "PeopleInfo: " +
-                " firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", pathToPhoto='" + pathToPhoto + '\'' +
-                ", listOfKnowledge=" + listOfKnowledge +
-                " ";
-    }
-
-
     @Override
     public boolean equals(Object object) {
         if (this == object)
