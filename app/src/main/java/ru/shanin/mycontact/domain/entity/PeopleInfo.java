@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.groupingBy;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PeopleInfo {
 
@@ -81,6 +82,11 @@ public class PeopleInfo {
                 );
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, secondName, age, email, phone, listOfKnowledge, pathToPhoto);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -108,6 +114,8 @@ public class PeopleInfo {
     public String getPathToPhoto() {
         return pathToPhoto;
     }
+
+
 
 }
 
